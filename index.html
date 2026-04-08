@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maja Larsson — UX Designer & Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ───── Reset & base ───── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #F5F0EA;
+      --bg-alt:    #FDFAF6;
+      --bg-dark:   #1C1A17;
+      --text:      #1C1A17;
+      --text-muted:#5E5248;
+      --border:    #E2D9CF;
+      --accent:    #9E4D2E;      /* terracotta */
+      --accent-2:  #3A6351;      /* sage green */
+      --tag-bg:    #EDE7DF;
+      --card-bg:   #FAF6F1;
+      --serif:     'DM Serif Display', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+      --radius:    12px;
+      --max:       1100px;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    /* ───── Skip link ───── */
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      background: var(--bg-dark); color: #F5F0EA;
+      padding: .6rem 1.2rem; border-radius: 0 0 var(--radius) var(--radius);
+      font-size: .875rem; font-weight: 500; z-index: 9999;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; opacity: 1; }
+
+    /* ───── Focus styles ───── */
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ───── Typography ───── */
+    h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; line-height: 1.15; }
+    h1 { font-size: clamp(2.8rem, 6vw, 5rem); letter-spacing: -0.5px; }
+    h2 { font-size: clamp(2rem, 3.5vw, 2.8rem); }
+    h3 { font-size: clamp(1.3rem, 2vw, 1.6rem); }
+    h4 { font-size: 1.1rem; }
+    p  { font-size: 1rem; color: var(--text-muted); line-height: 1.75; }
+    a  { color: var(--accent); text-decoration: none; transition: opacity .2s; }
+    a:hover { opacity: .7; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* ───── Layout helpers ───── */
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem); }
+    .section { padding: clamp(4rem, 8vw, 7rem) 0; }
+    .section--alt { background: var(--bg-alt); }
+    .section--dark { background: var(--bg-dark); color: #F5F0EA; }
+    .section--dark p { color: #B0A898; }
+    .section--dark h2, .section--dark h3, .section--dark h4 { color: #F5F0EA; }
+
+    .label {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+      display: block;
+    }
+    .section--dark .label { color: #C4825E; }
+
+    /* ───── Case study accent colours ───── */
+    #teamtailor .label { color: #A8285C; }
+    .teamtailor-pink { color: #A8285C; }
+    #teamtailor .method-number { color: #A8285C; opacity: .35; }
+    #teamtailor .outcome-num { color: #A8285C; opacity: .35; }
+    #booking .label { color: #3A6351; }
+    .booking-green { color: #3A6351; }
+    #booking .method-number { color: #3A6351; opacity: .35; }
+    #booking .outcome-num { color: #3A6351; opacity: .35; }
+
+    /* ───── Work card tag colours ───── */
+    .work-card--pink .tag { background: #F5D6E6; color: #A8285C; }
+    .work-card--green .tag { background: #ddecd4; color: #3A6351; }
+
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: .25rem .75rem;
+      border-radius: 100px;
+      letter-spacing: .02em;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: clamp(2.5rem, 5vw, 4rem) 0;
+    }
+
+    /* ───── Navigation ───── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,240,234,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex; align-items: center;
+    }
+    .nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem);
+      display: flex; align-items: center; justify-content: space-between; width: 100%;
+    }
+    .nav-logo {
+      font-family: var(--serif); font-size: 1.1rem; color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: .875rem; font-weight: 500; color: var(--text-muted);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); opacity: 1; }
+
+    /* ───── Hero ───── */
+    #hero {
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding-bottom: clamp(4rem, 8vw, 6rem);
+      padding-top: 100px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-family: var(--sans); font-size: .875rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .hero-name {
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    .hero-name em { color: var(--accent); font-style: italic; }
+    .hero-desc {
+      max-width: 620px;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--text); color: var(--bg);
+      font-size: .9rem; font-weight: 500;
+      padding: .85rem 1.75rem;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: transform .2s, background .2s;
+    }
+    .hero-cta:hover { opacity: 1; transform: translateY(-2px); background: var(--accent); }
+    .hero-cta svg { width: 16px; height: 16px; }
+
+    .hero-meta {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex; gap: clamp(2rem, 5vw, 4rem); flex-wrap: wrap;
+    }
+    .hero-meta-item { display: flex; flex-direction: column; gap: .25rem; }
+    .hero-meta-item span:first-child {
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .hero-meta-item span:last-child {
+      font-size: .95rem; font-weight: 400; color: var(--text);
+    }
+
+    /* ───── Work index ───── */
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .work-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      display: flex; flex-direction: column;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .work-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(28,26,23,.1); opacity: 1; }
+
+    .work-card-image {
+      aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .work-card-image.green { background: linear-gradient(135deg, #2F5243 0%, #4D8468 100%); }
+    .work-card-image.terra { background: linear-gradient(135deg, #8C3A20 0%, #C96840 100%); }
+
+    .work-card-image-label {
+      font-family: var(--sans);
+      font-size: .75rem; font-weight: 500; letter-spacing: .05em;
+      color: rgba(255,255,255,.55);
+      border: 1px dashed rgba(255,255,255,.25);
+      padding: .6rem 1.1rem; border-radius: 6px;
+      text-align: center;
+    }
+
+    .work-card-body { padding: 1.75rem; flex: 1; display: flex; flex-direction: column; gap: .75rem; }
+    .work-card-body h3 { font-size: 1.2rem; color: var(--text); }
+    .work-card-body p { font-size: .9rem; color: var(--text-muted); }
+    .work-card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: auto; padding-top: .75rem;
+    }
+    .work-card-arrow {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 1rem;
+    }
+
+    /* ───── Case study shared ───── */
+    .case-header {
+      padding: clamp(4rem, 8vw, 6rem) 0 0;
+    }
+    .case-overview {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 2.5rem 0;
+    }
+    @media (max-width: 640px) {
+      .case-overview { grid-template-columns: 1fr; }
+    }
+    .case-overview-item {
+      padding: 1.5rem 1.75rem;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: .3rem;
+    }
+    .case-overview-item:last-child { border-right: none; }
+    @media (max-width: 640px) {
+      .case-overview-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .case-overview-item:last-child { border-bottom: none; }
+    }
+    .case-overview-item span:first-child {
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .case-overview-item span:last-child { font-size: .95rem; color: var(--text); }
+
+    .case-section { padding: clamp(2.5rem, 5vw, 4rem) 0; border-bottom: 1px solid var(--border); }
+    .case-section:last-of-type { border-bottom: none; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+    @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+    .stat-callout {
+      display: inline-flex; flex-direction: column;
+      border-left: 3px solid var(--accent);
+      padding-left: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .stat-callout .stat-number {
+      font-family: var(--serif); font-size: 2.4rem; color: var(--accent); line-height: 1;
+    }
+    .stat-callout .stat-label { font-size: .85rem; color: var(--text-muted); margin-top: .25rem; }
+
+    /* ───── Method steps ───── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+    .method-card {
+      background: var(--card-bg);
+      padding: 1.75rem;
+      display: flex; flex-direction: column; gap: .75rem;
+    }
+    .method-number {
+      font-family: var(--serif); font-size: 2rem; color: var(--border);
+      line-height: 1;
+    }
+    .method-card h4 { font-size: 1rem; font-family: var(--serif); color: var(--text); }
+    .method-card p  { font-size: .875rem; }
+
+    /* ───── Image placeholder ───── */
+    .img-placeholder {
+      width: 100%; background: var(--tag-bg);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .5rem; padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    .img-placeholder svg { opacity: .35; }
+    .img-placeholder span {
+      font-size: .8rem; color: var(--text-muted); max-width: 280px; line-height: 1.5;
+    }
+    .img-placeholder.tall { min-height: 320px; }
+    .img-placeholder.short { min-height: 200px; }
+
+    .img-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ───── Insight box ───── */
+    .insight-box {
+      background: var(--bg-dark); color: #F5F0EA;
+      border-radius: var(--radius);
+      padding: 2rem 2.25rem;
+      margin: 2rem 0;
+    }
+    .insight-box .insight-label {
+      font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      color: #C4825E; margin-bottom: .75rem;
+    }
+    .insight-box p {
+      color: #CFC8BE; font-size: 1rem; line-height: 1.75;
+    }
+    .insight-box .insight-quote {
+      font-family: var(--serif); font-style: italic; font-size: 1.2rem;
+      color: #F5F0EA; line-height: 1.55; margin-bottom: .75rem;
+    }
+
+    /* ───── Outcome list ───── */
+    .outcome-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 1.5rem; }
+    @media (max-width: 640px) { .outcome-list { grid-template-columns: 1fr; } }
+    .outcome-list li {
+      background: var(--card-bg);
+      padding: 1.4rem 1.6rem;
+      display: flex; flex-direction: column; gap: .35rem;
+    }
+    .outcome-list li .outcome-num {
+      font-family: var(--serif); font-size: 1.4rem; color: var(--border); line-height: 1; margin-bottom: .1rem;
+    }
+    .outcome-list li strong { color: var(--text); font-size: .95rem; display: block; margin-bottom: .2rem; }
+    .outcome-list li span { font-size: .875rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ───── Feature cards ───── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 900px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: var(--bg-alt);
+    }
+    .feature-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: .85rem;
+    }
+    .feature-icon.green { background: #D4EAE0; }
+    .feature-icon.terra { background: #F2DDD4; }
+    .feature-card h4 { font-family: var(--serif); font-size: 1rem; margin-bottom: .4rem; }
+    .feature-card p { font-size: .85rem; }
+
+    /* ───── Metric comparison ───── */
+    .metric-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+    .metric-item {
+      padding: 2rem 2.25rem;
+      display: flex; flex-direction: column; gap: .35rem;
+    }
+    .metric-item.before { background: var(--tag-bg); border-right: 1px solid var(--border); }
+    .metric-item.after  { background: var(--bg-alt); }
+    .metric-item .metric-val {
+      font-family: var(--serif); font-size: 3rem; line-height: 1; color: var(--text);
+    }
+    .metric-item.after .metric-val { color: var(--accent-2); }
+    .metric-item .metric-lbl { font-size: .8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; }
+    .metric-item .metric-desc { font-size: .875rem; color: var(--text-muted); margin-top: .25rem; }
+
+    /* ───── About ───── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: start;
+    }
+    @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .skills-list {
+      display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem;
+    }
+
+    /* ───── Contact ───── */
+    .contact-inner {
+      text-align: center;
+      max-width: 560px; margin: 0 auto;
+      padding: clamp(4rem, 8vw, 6rem) 0;
+    }
+    .contact-inner h2 { margin-bottom: 1rem; }
+    .contact-inner p  { margin-bottom: 2rem; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--accent); color: #fff;
+      font-size: .95rem; font-weight: 500;
+      padding: .9rem 2rem; border-radius: 100px;
+      text-decoration: none;
+      transition: transform .2s, opacity .2s;
+    }
+    .btn-primary:hover { opacity: .85; transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: transparent; color: var(--text);
+      border: 1.5px solid var(--border);
+      font-size: .95rem; font-weight: 500;
+      padding: .9rem 2rem; border-radius: 100px;
+      text-decoration: none;
+      transition: transform .2s, border-color .2s, color .2s;
+      margin-left: .75rem;
+    }
+    .btn-secondary:hover { opacity: 1; transform: translateY(-2px); border-color: var(--text); color: var(--text); }
+    .btn-group { display: flex; gap: 0; flex-wrap: wrap; justify-content: center; }
+
+    /* ───── Footer ───── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding: 2rem 0;
+    }
+    .footer-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-size: .82rem; color: #6B5E52; }
+    .section--dark footer p { color: #7A6E65; }
+
+    /* ───── Scroll reveal ───── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ───── Responsive ───── */
+    @media (max-width: 600px) {
+      .work-grid { grid-template-columns: 1fr; }
+      .metric-compare { grid-template-columns: 1fr; }
+      .metric-item.before { border-right: none; border-bottom: 1px solid var(--border); }
+      .nav-links { gap: 1.25rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ════ NAV ════ -->
+  <nav aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#hero">Maja Larsson</a>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+  <!-- ════ HERO ════ -->
+  <section id="hero">
+    <div class="container">
+      <p class="hero-eyebrow">UX Designer &amp; Researcher · Gothenburg, Sweden</p>
+      <h1 class="hero-name">
+        Designing with<br /><em>empathy</em> and curiosity.
+      </h1>
+      <p class="hero-desc">
+        I do detailed user research and translate what I find into design that actually works. Currently completing a Master's in Software Engineering with a specialisation in Interaction Design and technologies at Chalmers.
+      </p>
+      <a href="#work" class="hero-cta">
+        View my work
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3v10M3 8l5 5 5-5"/>
+        </svg>
+      </a>
+
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span>Degree</span>
+          <span>M.Sc. Software Engineering</span>
+        </div>
+        <div class="hero-meta-item">
+          <span>University</span>
+          <span>Chalmers University of Technology</span>
+        </div>
+        <div class="hero-meta-item">
+          <span>Focus</span>
+          <span>UX Research · Product Design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════ WORK INDEX ════ -->
+  <section id="work" class="section">
+    <div class="container">
+      <span class="label">Selected work</span>
+      <h2>Two projects with a research first approach.</h2>
+
+      <div class="work-grid reveal">
+
+        <!-- Card 1 -->
+        <a href="#teamtailor" class="work-card work-card--pink">
+          <div class="work-card-image">
+            <img src="cover-teamtailor.png" alt="Teamtailor job posting redesign" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          </div>
+          <div class="work-card-body">
+            <div class="tags">
+              <span class="tag">UX Research</span>
+              <span class="tag">B2B SaaS</span>
+              <span class="tag">Mixed Methods</span>
+            </div>
+            <h3>AI-Augmented UX Research for Teamtailor</h3>
+            <p>Multi-method research for a live product redesign and an investigation into how AI can scale UX insight without replacing the human in the loop.</p>
+            <div class="work-card-footer">
+              <span class="tag">2026</span>
+              <div class="work-card-arrow">→</div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="#booking" class="work-card work-card--green">
+          <div class="work-card-image">
+            <img src="cover-booking.png" alt="Campus study room booking app" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          </div>
+          <div class="work-card-body">
+            <div class="tags">
+              <span class="tag">Product Design</span>
+              <span class="tag">Mobile App</span>
+              <span class="tag">Figma</span>
+              <span class="tag">A/B Testing</span>
+            </div>
+            <h3>Campus Study Room Booking App</h3>
+            <p>Redesigned Chalmers' broken booking system, going from 55% room utilisation and ghost-bookings to a QR check-in app that cut booking time by 35%.</p>
+            <div class="work-card-footer">
+              <span class="tag">2024</span>
+              <div class="work-card-arrow">→</div>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       CASE STUDY 1 — TEAMTAILOR
+  ════════════════════════════════════════ -->
+  <section id="teamtailor" class="section--alt">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="case-header reveal">
+      <span class="label">Case study 01</span>
+      <h2>UX Research for <span class="teamtailor-pink">Teamtailor's</span><br />Job Posting Redesign</h2>
+      <p style="max-width:620px; margin-top:1rem; font-size:1.05rem;">
+        A mixed-methods research project conducted in collaboration with Teamtailor, a global B2B SaaS recruitment platform used by 12,000+ organisations. The research informed an active product redesign and explored how AI can augment the UX research process at scale.
+      </p>
+    </div>
+
+    <!-- Overview bar -->
+    <div class="case-overview reveal">
+      <div class="case-overview-item">
+        <span>Client / Context</span>
+        <span>Teamtailor</span>
+      </div>
+      <div class="case-overview-item">
+        <span>My role</span>
+        <span>UX Researcher (2-person team)</span>
+      </div>
+      <div class="case-overview-item">
+        <span>Methods</span>
+        <span>Interviews · Survey · Usability Testing · AI Analysis</span>
+      </div>
+    </div>
+    <hr class="divider" />
+
+    <!-- Problem -->
+    <div class="case-section reveal">
+      <span class="label">The challenge</span>
+      <div class="two-col">
+        <div>
+          <h3>Redesigning the most vital function in Teamtailors ATS while evaluating AI-augmented methods.</h3>
+        </div>
+        <div>
+          <p>
+            Running quality UX research takes time. Recruiting participants, conducting interviews, analysing transcripts. For a fast-moving B2B SaaS company like Teamtailor, keeping up with continuous product development is a constant tension.
+          </p>
+          <p style="margin-top:1rem;">
+            At the same time, organisations generate enormous amounts of data every day: customer feedback in Slack, design rationale in Figma, product decisions in Notion. This data is rich with user insight, yet it's rarely treated as a systematic research source.
+          </p>
+            <p style="margin-top:1rem;">
+            Goal: <strong>Ground the Teamtailor redesign in real user needs while establishing a framework for large-scale, AI-assisted UX research.</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Methods -->
+    <div class="case-section reveal">
+      <span class="label">Research methods</span>
+      <div class="method-grid" style="margin-top:2rem;">
+        <div class="method-card">
+          <div class="method-number">01</div>
+          <h4>Contextual Interviews</h4>
+          <p>In-depth sessions exploring how Teamtailor users actually create and publish job postings. Uncovered friction points, workarounds, and unmet needs within real workflows.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-number">02</div>
+          <h4>Large-Scale Survey</h4>
+          <p>Quantitative study to validate and scale interview findings across a broader user segment. Testing which patterns held, which were edge cases, and where to prioritise redesign effort.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-number">03</div>
+          <h4>Usability Testing</h4>
+          <p>Task-based evaluation of the redesigned job posting prototype. Sessions measured efficiency and clarity, and findings fed directly back into iterative design refinements.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-number">04</div>
+          <h4>AI-Assisted Analysis</h4>
+          <p>LLMs applied to Teamtailor's naturally occurring data such as Slack channels, Notion docs and Figma annotations through prompt engineering.</p>
+        </div>
+      </div>
+      <div style="margin-top:2rem; border-radius:var(--radius); overflow:hidden;">
+        <img src="teamtailor-companies.png" alt="A selection of companies interviewed and tested on during user research" style="width:100%; display:block; border-radius:var(--radius);" />
+      </div>
+      <p style="margin-top:.6rem; font-size:.8rem; color:var(--text-muted); font-style:italic;">A selection of the companies we conducted interviews and usability testing with during our research.</p>
+    </div>
+
+    <!-- Outcome -->
+    <div class="case-section reveal">
+      <span class="label">Outcomes</span>
+
+      <ul class="outcome-list">
+        <li>
+          <span class="outcome-num">01</span>
+          <strong>Concrete redesign recommendations</strong>
+          <span>For Teamtailor's job posting flow, grounded in real user data from interviews, surveys, and usability testing.</span>
+        </li>
+        <li>
+          <span class="outcome-num">02</span>
+          <strong>Validated user insights</strong>
+          <span>Identified a critical failure point in the new flow where customers could wrongly assume a job ad had been posted which directly informed the live redesign.</span>
+        </li>
+        <li>
+          <span class="outcome-num">03</span>
+          <strong>A reusable methodological protocol</strong>
+          <span>For AI-assisted analysis of naturally occurring data, transferable to other B2B SaaS research contexts.</span>
+        </li>
+        <li>
+          <span class="outcome-num">04</span>
+          <strong>A clear account of limitations</strong>
+          <span>Where AI analysis adds value, where it falls short, and what conditions shape its usefulness as a research tool.</span>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       CASE STUDY 2 — BOOKING SYSTEM
+  ════════════════════════════════════════ -->
+  <section id="booking" class="section">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="case-header reveal">
+      <span class="label">Case study 02</span>
+      <h2>Campus <span class="booking-green">Study Room</span><br />Booking App</h2>
+      <p style="max-width:620px; margin-top:1rem; font-size:1.05rem;">
+        Chalmers' study room booking system was failing students. Rooms sat empty while students struggled to find study space. We redesigned the experience from the ground up which resulted a tested, high-fidelity mobile prototype.
+      </p>
+    </div>
+
+    <!-- Overview bar -->
+    <div class="case-overview reveal">
+      <div class="case-overview-item">
+        <span>Client / Context</span>
+        <span>Chalmers University of Technology</span>
+      </div>
+      <div class="case-overview-item">
+        <span>My role</span>
+        <span>Product Designer / UX Researcher</span>
+      </div>
+      <div class="case-overview-item">
+        <span>Methods</span>
+        <span>User Interviews · Survey · A/B Testing · Figma Prototyping</span>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Problem -->
+    <div class="case-section reveal">
+      <span class="label">The challenge</span>
+      <div class="two-col">
+        <div>
+          <h3>Study rooms were at most 55% occupied but majority of students still found it hard to find places to study.</h3>
+        </div>
+        <div>
+          <p>
+            Despite a persistent shortage of study spaces, nearly half of Chalmers' study rooms sat empty at peak times. Our preliminary research uncovered the root cause: students were booking rooms they never turned up for. This made rooms look booked in the system when in reality they were available.
+          </p>
+          <p style="margin-top:1rem;">
+            The existing booking interface compounded the problem: it was slow, unclear, and gave users no way to find their room after booking. Students either avoided the system entirely or booked defensively.
+          </p>
+          <p style="margin-top:1rem;">
+            Goal: <strong>Design a mobile booking system that increases actual utilisation through better UX and a smart check-in mechanism.</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Research -->
+    <div class="case-section reveal">
+      <span class="label">Research phase</span>
+
+      <div class="method-grid" style="margin-top:1.5rem;">
+        <div class="method-card">
+          <div class="method-number">01</div>
+          <h4>User Interviews</h4>
+          <p>Contextual conversations with Chalmers students about how they actually find, book, and use study rooms and where the existing system fails them. Revealed the ghost booking pattern and navigation confusion.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-number">02</div>
+          <h4>Large-Scale Survey</h4>
+          <p>Supplemented the interviews with quantitative research. Learned that quick, last-minute booking was a common unmet need.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-number">03</div>
+          <h4>State of the Art</h4>
+          <p>Competitive analysis of existing room booking and space management solutions. Identifying patterns to adopt, gaps to fill, and UX conventions that students already know.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prototype process -->
+    <div class="case-section reveal">
+      <span class="label">Design process</span>
+      <p style="max-width:600px; margin-top:.75rem;">
+        The research findings drove three distinct design directions, each addressing the core problems differently. We ran A/B testing on all three before converging on the final direction.
+      </p>
+
+      <div class="img-row" style="margin-top:1.5rem;">
+        <div style="background:var(--tag-bg); border-radius:var(--radius); overflow:hidden; height:500px; display:flex; align-items:center; justify-content:center; padding:1.25rem;">
+          <img src="PrototypeA.png" alt="Prototype A" style="height:100%; width:100%; object-fit:contain;" />
+        </div>
+        <div style="background:var(--tag-bg); border-radius:var(--radius); overflow:hidden; height:500px; display:flex; align-items:center; justify-content:center; padding:1.25rem;">
+          <img src="PrototypeB.png" alt="Prototype B" style="height:100%; width:100%; object-fit:contain;" />
+        </div>
+        <div style="background:var(--tag-bg); border-radius:var(--radius); overflow:hidden; height:500px; display:flex; align-items:center; justify-content:center; padding:1.25rem;">
+          <img src="PrototypeC.png" alt="Prototype C" style="height:100%; width:100%; object-fit:contain;" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Solution -->
+    <div class="case-section reveal">
+      <span class="label">The solution</span>
+      <h3>A mobile app that closes the loop on every booking.</h3>
+
+      <div class="feature-grid" style="margin-top:1.5rem;">
+        <div class="feature-card">
+          <div class="feature-icon terra">📲</div>
+          <h4>QR Check-In</h4>
+          <p>Scan the QR code at the room to confirm your booking otherwise the room is automatically released for others.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon terra">⚡</div>
+          <h4>Quick Booking</h4>
+          <p>Book a room in one tap from the home screen. For students who need a space right now and not three screens of navigation from now.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">🗺</div>
+          <h4>Campus Map Integration</h4>
+          <p>After booking, navigate directly to your room using the integrated campus map. No more wandering corridors looking for room B214.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">⭐</div>
+          <h4>Favourites &amp; Smart Reminders</h4>
+          <p>Save preferred rooms for one-tap rebooking. Push notifications remind you before your booking and prompt check-in on arrival.</p>
+        </div>
+      </div>
+
+      <!-- Hi-Fi screenshots -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-top:2rem;">
+        <div style="background:var(--tag-bg); border-radius:var(--radius); overflow:hidden; height:450px; display:flex; align-items:center; justify-content:center; padding:1.25rem;">
+          <img src="FinalPrototype1.png" alt="Final prototype screen 1" style="height:100%; width:100%; object-fit:contain;" />
+        </div>
+        <div style="background:var(--tag-bg); border-radius:var(--radius); overflow:hidden; height:450px; display:flex; align-items:center; justify-content:center; padding:1.25rem;">
+          <img src="FinalPrototype2.png" alt="Final prototype screen 2" style="height:100%; width:100%; object-fit:contain;" />
+        </div>
+        <div style="background:var(--tag-bg); border-radius:var(--radius); overflow:hidden; height:450px; display:flex; align-items:center; justify-content:center; padding:1.25rem;">
+          <img src="FinalPrototype3.png" alt="Final prototype screen 3" style="height:100%; width:100%; object-fit:contain;" />
+        </div>
+        <div style="background:var(--tag-bg); border-radius:var(--radius); overflow:hidden; height:450px; display:flex; align-items:center; justify-content:center; padding:1.25rem;">
+          <img src="FinalPrototype4.png" alt="Final prototype screen 4" style="height:100%; width:100%; object-fit:contain;" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div class="case-section reveal">
+      <span class="label">Result</span>
+      <h3>35% faster. Same task, better experience.</h3>
+      <p style="max-width:560px; margin-top:.75rem;">Usability testing compared task completion time between the old system and the new prototype. Students booked a room measurably faster and with significantly fewer errors and less confusion.</p>
+
+      <div class="metric-compare">
+        <div class="metric-item before">
+          <span class="metric-lbl">Old system</span>
+          <span class="metric-val">26s</span>
+          <span class="metric-desc">Average time to complete a room booking</span>
+        </div>
+        <div class="metric-item after">
+          <span class="metric-lbl">New prototype</span>
+          <span class="metric-val">17s</span>
+          <span class="metric-desc">35% faster for the same task</span>
+        </div>
+      </div>
+
+      <ul class="outcome-list">
+        <li>
+          <span class="outcome-num">01</span>
+          <strong>QR check-in eliminates ghost bookings</strong>
+          <span>Rooms are only held for bookings confirmed in person, unused rooms are automatically released.</span>
+        </li>
+        <li>
+          <span class="outcome-num">02</span>
+          <strong>Quick booking reduces friction</strong>
+          <span>Students can book a room in one tap from the home screen, meeting the need for last-minute study space.</span>
+        </li>
+        <li>
+          <span class="outcome-num">03</span>
+          <strong>Campus map removes post-booking confusion</strong>
+          <span>A pain point raised by nearly every interview participant, now solved with integrated navigation.</span>
+        </li>
+        <li>
+          <span class="outcome-num">04</span>
+          <strong>Strongly positive user feedback</strong>
+          <span>Across all three major features tested in usability sessions, participants responded positively to the redesigned flows.</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+  </section>
+
+
+  <!-- ════ ABOUT ════ -->
+  <section id="about" class="section section--dark">
+  <div class="container">
+    <div class="about-grid reveal">
+      <div>
+        <span class="label">About</span>
+        <h2>I'm Maja.</h2>
+        <p style="margin-top:1.25rem;">
+          I'm a UX designer and researcher finishing my Master's in Software Engineering at Chalmers with a specialization in Interaction Design and Technologies.
+        </p>
+        <p style="margin-top:1rem;">
+I'm passionate about the <em>'for who'</em> and <em>'why'</em> when it comes to building solutions and I believe the best design decisions are grounded in real data, not assumptions. </p>
+        <p style="margin-top:1rem;">
+          I'm particularly drawn to complex systems and professional tools, where clarity and trust matter most.
+        </p>
+      </div>
+      <div>
+        <div style="border-radius:var(--radius); overflow:hidden;">
+          <img src="me.jpg" alt="Maja Larsson" style="width:100%; display:block; object-fit:cover;" />
+        </div>
+
+        <div style="margin-top:2rem;">
+          <span class="label">Skills &amp; methods</span>
+          <div class="skills-list">
+            <span class="tag">User Interviews</span>
+            <span class="tag">Usability Testing</span>
+            <span class="tag">Survey Design</span>
+            <span class="tag">Thematic Analysis</span>
+            <span class="tag">Figma</span>
+            <span class="tag">Wireframing</span>
+            <span class="tag">Hi-Fi Prototyping</span>
+            <span class="tag">A/B Testing</span>
+            <span class="tag">Agile / Sprint-based</span>
+            <span class="tag">Interaction Design</span>
+            <span class="tag">AI-assisted Research</span>
+            <span class="tag">WCAG</span>
+            <span class="tag">B2B SaaS</span>
+            <span class="tag">Coding</span>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+
+  <!-- ════ CONTACT ════ -->
+  <section id="contact" class="section">
+  <div class="container">
+    <div class="contact-inner reveal">
+      <span class="label">Get in touch</span>
+      <h2>Let's work together.</h2>
+      <p>
+        I'm open to new opportunities sof you're building something where clarity and user insight matter, I'd love to hear from you.
+      </p>
+      <div class="btn-group">
+        <a href="mailto:larssonmaja23@gmail.com" class="btn-primary">
+          Say hello
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 4l6 5 6-5M2 4h12v9H2z"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/maja-larsson-ba0340236" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          LinkedIn
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  </section>
+
+
+  </main>
+
+  <!-- ════ FOOTER ════ -->
+  <div class="section--dark">
+  <footer>
+    <div class="footer-inner">
+      <p>© 2026 Maja Larsson</p>
+      <p>Chalmers University of Technology</p>
+    </div>
+  </footer>
+  </div>
+
+
+  <!-- ════ SCROLL REVEAL SCRIPT ════ -->
+  <script>
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    revealEls.forEach(el => observer.observe(el));
+
+    // Smooth active nav
+    const sections = document.querySelectorAll('section[id], section + section');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 100) {
+          current = section.getAttribute('id') || current;
+        }
+      });
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+      });
+    });
+  </script>
+
+</body>
+</html>
